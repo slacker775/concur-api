@@ -1,0 +1,174 @@
+openapi: 3.0.1
+info:
+  title: Users
+  description: Provides details of all the client's SAP Concur users that meet the
+    search parameters.
+  version: "3.0"
+servers:
+- url: https://www.concursolutions.com/api/v3.0
+security:
+- OAuth2: []
+tags:
+- name: Resources
+paths:
+  /common/users:
+    get:
+      tags:
+      - Resources
+      summary: Get all users.
+      description: Retrieves all users based on the search criteria.
+      parameters:
+      - name: offset
+        in: query
+        description: The starting point of the next set of results, after the limit
+          specified in the limit field has been reached.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: 'The number of records to return. Default value: 25. Maximum:
+          100.'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: primaryEmail
+        in: query
+        description: The primary email of the user.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: employeeID
+        in: query
+        description: The employee ID of the user.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: The login ID of the user.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: lastName
+        in: query
+        description: The last name of the user.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: active
+        in: query
+        description: 'Indicates whether to return active or inactive users. FORMAT:
+          true or false'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: string
+  schemas:
+    User:
+      type: object
+      properties:
+        Active:
+          type: boolean
+          description: Indicates whether the user is currently active or not.
+        CellPhoneNumber:
+          type: string
+          nullable: true
+          description: The cell phone number of the user.
+        EmployeeID:
+          type: string
+          nullable: true         
+          description: The employee ID of the user.
+        FirstName:
+          type: string
+          nullable: true         
+          description: The first name of the user.
+        ID:
+          type: string
+          nullable: true         
+          description: The unique identifier of the resource.
+        LastName:
+          type: string
+          nullable: true         
+          description: The last name of the user.
+        LoginID:
+          type: string
+          nullable: true         
+          description: The login ID of the user.
+        MiddleName:
+          type: string
+          nullable: true         
+          description: The middle name of the user.
+        OrganizationUnit:
+          type: string
+          nullable: true         
+          description: The organization unit of the user.
+        PrimaryEmail:
+          type: string
+          nullable: true         
+          description: The primary email of the user.
+        URI:
+          type: string
+          nullable: true         
+          description: The URI to the resource.
+    UserCollection:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        NextPage:
+          type: string
+          description: The URI of the next page of results, if any.
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: To use this API, you need to get OAuth client credentials (client
+        ID, secret, and geolocation) from SAP Concur, and be authorized to use the
+        relevant scope. Refer to the <a href="https://developer.concur.com/api-reference/authentication/getting-started.html">full
+        authentication information</a> for more information.
+      flows:
+        clientCredentials:
+          tokenUrl: https://us.api.concursolutions.com/oauth2/v0
+          scopes: {}
+x-sap-shortText: Retreives basic company information with a list of users.
+x-servers:
+- url: https://www.concursolutions.com/api/v3.0
+  description: SAP Concur API EndPoint

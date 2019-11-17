@@ -1,0 +1,8 @@
+<?php
+
+return [
+  'openapi-file' => __DIR__ . '/swagger/openapi.yaml',
+  'namespace' => 'Concur\Api',
+  'directory' => __DIR__ . '/src',
+  'client' => 'psr18',
+];
