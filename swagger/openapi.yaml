@@ -11,6 +11,84 @@ security:
 tags:
 - name: Resources
 paths:
+  /common/lists:
+    get:
+      tags:
+      - Resources
+      summary: Gets all lists
+      description: Returns all lists based on the search criteria.
+      parameters:
+      - name: limit
+        in: query
+        description: The number of records to return. The default is 25 and the maximum
+          is 100.
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        description: The start of the page offset. The default is from the beginning.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGetCollection'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListGetCollection'
+    post:
+      tags:
+      - Resources
+      summary: Create a new list
+      description: Create a new list
+      requestBody:
+        description: list object to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPost'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ListPost'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+      x-codegen-request-body-name: content
+  /common/lists/{id}:
+    get:
+      tags:
+      - Resources
+      summary: Get a single list by ID
+      description: Returns a list by ID.
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier for the list.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListGet'
   /common/users:
     get:
       tags:
@@ -101,6 +179,88 @@ components:
           schema:
             type: string
   schemas:
+    CreateResponse:
+      type: object
+      properties:
+        ID:
+          type: string
+        URI:
+          type: string
+    ListGet:
+      type: object
+      properties:
+        ConnectorID:
+          type: string
+          nullable: true
+          description: Optional. Defines the encrypted ConnectorID. If not provided
+            then the list isn't associated with a connector.
+        DisplayCodeFirst:
+          type: boolean
+          description: Required. Defines whether CODE should appear before TEXT, or
+            vice-versa.
+        ExternalThreshold:
+          type: integer
+          nullable: true
+          description: Optional. Default value is 1. Defines the threshold from where
+            the level starts being external. This value can only be set if a ConnectorID
+            is provided.
+          format: int32
+        ID:
+          type: string
+          description: The unique identifier of the resource.
+        IsVendorList:
+          type: boolean
+          description: Required. Defines whether it is a vendor list.
+        Name:
+          type: string
+          nullable: true
+          description: Required. Defines a name for the list. This name must be unique.
+        SearchCriteriaCode:
+          type: string
+          nullable: true
+          description: Required. Defines whether the search criteria should apply
+            to the CODE or to the TEXT.
+        URI:
+          type: string
+          nullable: true
+          description: The URI to the resource.
+    ListGetCollection:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListGet'
+        NextPage:
+          type: string
+          description: The URI of the next page of results, if any.
+    ListPost:
+      type: object
+      properties:
+        ConnectorID:
+          type: string
+          description: Optional. Defines the encrypted ConnectorID. If not provided
+            then the list isn't associated with a connector.
+        DisplayCodeFirst:
+          type: boolean
+          description: Required. Defines whether CODE should appear before TEXT, or
+            vice-versa.
+        ExternalThreshold:
+          type: integer
+          description: Optional. Default value is 1. Defines the threshold from where
+            the level starts being external. This value can only be set if a ConnectorID
+            is provided.
+          format: int32
+        IsVendorList:
+          type: boolean
+          description: Required. Defines whether it is a vendor list.
+        Name:
+          type: string
+          description: Required. Defines a name for the list. This name must be unique.
+        SearchCriteriaCode:
+          type: string
+          description: Required. Defines whether the search criteria should apply
+            to the CODE or to the TEXT.
     User:
       type: object
       properties:
@@ -156,6 +316,7 @@ components:
             $ref: '#/components/schemas/User'
         NextPage:
           type: string
+          nullable: true
           description: The URI of the next page of results, if any.
   securitySchemes:
     OAuth2:
