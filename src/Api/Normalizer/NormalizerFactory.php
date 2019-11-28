@@ -18,6 +18,11 @@ class NormalizerFactory
         $normalizers[] = new \Symfony\Component\Serializer\Normalizer\ArrayDenormalizer();
         $normalizers[] = new CreateResponseNormalizer();
         $normalizers[] = new CustomFieldNormalizer();
+        $normalizers[] = new EntryCollectionNormalizer();
+        $normalizers[] = new EntryGetNormalizer();
+        $normalizers[] = new EntryPostNormalizer();
+        $normalizers[] = new EntryPutNormalizer();
+        $normalizers[] = new JourneyNormalizer();
         $normalizers[] = new ReportCollectionNormalizer();
         $normalizers[] = new ReportGetNormalizer();
         $normalizers[] = new ReportPostNormalizer();

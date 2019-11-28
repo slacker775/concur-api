@@ -13,6 +13,109 @@ namespace Concur\Api;
 class Client extends \Jane\OpenApiRuntime\Client\Psr18Client
 {
     /**
+     * Gets all expense entries owned by the user.
+     *
+     * @param array $queryParameters {
+     *
+     *     @var string $reportID The report ID of the entries to be retrieved.  Format: An alpha-numeric GUID string.
+     *     @var string $paymentTypeID the ID of the payment type of the entries to be retrieved
+     *     @var string $batchID The batch ID for the entries to be retrieved. The batch ID identifies the batch that contains the report payee associated with the entries.
+     *     @var bool $isBillable Determines whether the operation retrieves entries that are billable. Format: true or false
+     *     @var string $attendeeTypeCode the ID of the attendee type for the entries to be retrieved
+     *     @var bool $hasAttendees Determines whether the operation retrieves entries that have attendees. Format: true or false
+     *     @var bool $hasVAT Determines whether the operation retrieves entries that have VAT details. Format: true or false
+     *     @var string $expenseTypeCode the code for the expense type for the entries to be retrieved
+     *     @var string $attendeeID the attendee associated with the entries to be retrieved
+     *     @var string $offset the starting point of the next set of results, after the limit specified in the limit field has been reached
+     *     @var int $limit The number of records to return. Default value: 25
+     *     @var string $user The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Concur\Api\Model\EntryCollection|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function getExpenseEntry(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\GetExpenseEntry($queryParameters), $fetch);
+    }
+
+    /**
+     * Creates a new expense entry for the specified user.
+     *
+     * @param array $queryParameters {
+     *
+     *     @var string $user The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @throws \Concur\Api\Exception\PostExpenseEntryBadRequestException
+     *
+     * @return \Concur\Api\Model\CreateResponse|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function postExpenseEntry(\Concur\Api\Model\EntryPost $requestBody, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\PostExpenseEntry($requestBody, $queryParameters), $fetch);
+    }
+
+    /**
+     * Deletes the specified expense entry.
+     *
+     * @param string $id              the ID of the expense entry to delete
+     * @param array  $queryParameters {
+     *
+     *     @var string $user The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function deleteExpenseEntryById(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\DeleteExpenseEntryById($id, $queryParameters), $fetch);
+    }
+
+    /**
+     * Gets the specified expense entry.
+     *
+     * @param string $id              the expense entry ID
+     * @param array  $queryParameters {
+     *
+     *     @var string $user The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Concur\Api\Model\EntryGet|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function getExpenseEntryById(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\GetExpenseEntryById($id, $queryParameters), $fetch);
+    }
+
+    /**
+     * Updates the specified expense entry. Only the fields provided in the supplied object are updated. Missing fields will not be altered.
+     *
+     * @param string $id              the expense entry ID
+     * @param array  $queryParameters {
+     *
+     *     @var string $user The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @throws \Concur\Api\Exception\PutExpenseEntryByIdBadRequestException
+     *
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function putExpenseEntryById(string $id, \Concur\Api\Model\EntryPut $requestBody, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\PutExpenseEntryById($id, $requestBody, $queryParameters), $fetch);
+    }
+
+    /**
      * Returns all reports owned by the user based on the search criteria.
      *
      * @param array $queryParameters {
