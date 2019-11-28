@@ -3,6 +3,6 @@
 return [
   'openapi-file' => __DIR__ . '/openapi.yaml',
   'namespace' => 'Concur\Api',
-  'directory' => __DIR__ . '/src',
+  'directory' => __DIR__ . '/src/Api',
   'client' => 'psr18',
 ];

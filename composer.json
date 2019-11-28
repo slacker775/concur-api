@@ -14,19 +14,20 @@
     },
     "autoload" : {
         "psr-4" : {
-            "Concur\\Api\\" : "src/"
+            "Concur\\" : "src/"
         }
     },
     "require": {
-        "jane-php/open-api-runtime": "^5.0"
+        "jane-php/open-api-runtime": "^5.0",
+        "league/oauth2-client": "^2.4"
     },
     "require-dev": {
         "auron-consulting-oss/php-console-logger": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.16",
         "jane-php/open-api": "^5.0",
         "nyholm/psr7": "^1.2",
-        "symfony/http-client": "^4.3",
-        "symfony/var-dumper": "^4.3",
+        "symfony/http-client": "*",
+        "symfony/var-dumper": "*",
         "zendframework/zend-diactoros": "^2.2"
     }
 }

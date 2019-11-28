@@ -891,45 +891,85 @@ components:
             Kong dollar; INR - Indian rupee; MXN - Mexican peso; NOK - Norwegian krone;
             SEK - Swedish krona.'
         Custom1:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom10:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom11:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom12:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom13:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom14:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom15:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom16:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom17:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom18:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom19:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom2:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom20:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom3:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom4:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom5:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom6:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom7:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom8:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         Custom9:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         EverSentBack:
           type: boolean
           description: 'Whether the report has ever been sent back to the employee.
@@ -945,7 +985,8 @@ components:
           nullable: true
           description: The text of the most recent comment on the report.
         LastModifiedDate:
-          type: string
+          oneOf:
+            type: boolean, string
           description: The date the report header was last modified.
           format: date-time
         LedgerName:
@@ -957,17 +998,29 @@ components:
           nullable: true
           description: The name of the report.
         OrgUnit1:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         OrgUnit2:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         OrgUnit3:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         OrgUnit4:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         OrgUnit5:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         OrgUnit6:
-          $ref: '#/components/schemas/CustomField'
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
         OwnerLoginID:
           type: string
           nullable: true
@@ -977,7 +1030,8 @@ components:
           nullable: true
           description: The name of the expense report owner.
         PaidDate:
-          type: string
+          oneOf:
+            type: boolean, string
           nullable: true
           description: The date when all journal entries in the report were integrated
             with or extracted to the financial system.
@@ -1002,7 +1056,8 @@ components:
           description: The unique identifier of the policy that applies to this report.
             Maximum 64 characters.
         ProcessingPaymentDate:
-          type: string
+          oneOf:
+            type: boolean, string
           nullable: true
           description: The date that the report completed all approvals and was ready
             to be extracted for payment.
@@ -1012,7 +1067,8 @@ components:
           description: 'If Y, then this report has its receipt receipt confirmed by
             the Expense Processor. Format: Y/N'
         SubmitDate:
-          type: string
+          oneOf:
+            type: boolean, string
           nullable: true
           description: The date the report was submitted.
           format: date-time
@@ -1037,7 +1093,8 @@ components:
           type: string
           description: The URI to the resource.
         UserDefinedDate:
-          type: string
+          oneOf:
+            type: boolean, string
           nullable: true
           description: The date of the report assigned by the user.
           format: date-time
