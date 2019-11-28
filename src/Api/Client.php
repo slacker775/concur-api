@@ -116,6 +116,102 @@ class Client extends \Jane\OpenApiRuntime\Client\Psr18Client
     }
 
     /**
+     * Get a list of all receipt IDs owned by the user associated with the access token.
+     *
+     * @param array $queryParameters {
+     *
+     *     @var string $offset Starting page offset
+     *     @var int $limit Number of records to return (default 25)
+     *     @var string $user The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Concur\Api\Model\ReceiptImageCollection|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function getExpenseReceiptimage(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\GetExpenseReceiptimage($queryParameters), $fetch);
+    }
+
+    /**
+     * Upload a new receipt image.
+     *
+     * @param array $queryParameters {
+     *
+     *     @var string $user The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @throws \Concur\Api\Exception\PostExpenseReceiptimageBadRequestException
+     *
+     * @return \Concur\Api\Model\ReceiptImage|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function postExpenseReceiptimage(\stdClass $requestBody, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\PostExpenseReceiptimage($requestBody, $queryParameters), $fetch);
+    }
+
+    /**
+     * Deletes the specified receipt image.
+     *
+     * @param string $id              ID of the receipt image to delete
+     * @param array  $queryParameters {
+     *
+     *     @var string $user The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @throws \Concur\Api\Exception\DeleteExpenseReceiptimageByIdBadRequestException
+     *
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function deleteExpenseReceiptimageById(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\DeleteExpenseReceiptimageById($id, $queryParameters), $fetch);
+    }
+
+    /**
+     * Get a receipt image URL by image ID.
+     *
+     * @param string $id              ReceiptImage ID
+     * @param array  $queryParameters {
+     *
+     *     @var string $user The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Concur\Api\Model\ReceiptImage|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function getExpenseReceiptimageById(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\GetExpenseReceiptimageById($id, $queryParameters), $fetch);
+    }
+
+    /**
+     * Appends a receipt image to an existing image. The resulting image will be a consolidated PDF.
+     *
+     * @param string $id              ID of the receipt image to update
+     * @param array  $queryParameters {
+     *
+     *     @var string $user The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter.
+     * }
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @throws \Concur\Api\Exception\PutExpenseReceiptimageByIdBadRequestException
+     *
+     * @return \Psr\Http\Message\ResponseInterface|null
+     */
+    public function putExpenseReceiptimageById(string $id, \stdClass $requestBody, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\PutExpenseReceiptimageById($id, $requestBody, $queryParameters), $fetch);
+    }
+
+    /**
      * Returns all reports owned by the user based on the search criteria.
      *
      * @param array $queryParameters {
@@ -361,6 +457,18 @@ class Client extends \Jane\OpenApiRuntime\Client\Psr18Client
     public function getCommonListById(string $id, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\GetCommonListById($id), $fetch);
+    }
+
+    /**
+     * Creates a new receipt entry. This operation enables a provider company to post receipts to Concur.
+     *
+     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @return \Concur\Api\Model\CreateResponse|\Psr\Http\Message\ResponseInterface|null
+     */
+    public function postCommonReceipt(\Concur\Api\Model\ReceiptPost $requestBody, string $fetch = self::FETCH_OBJECT)
+    {
+        return $this->executePsr7Endpoint(new \Concur\Api\Endpoint\PostCommonReceipt($requestBody), $fetch);
     }
 
     /**

@@ -17,6 +17,7 @@ class NormalizerFactory
         $normalizers = [];
         $normalizers[] = new \Symfony\Component\Serializer\Normalizer\ArrayDenormalizer();
         $normalizers[] = new CreateResponseNormalizer();
+        $normalizers[] = new GeneralDetailNormalizer();
         $normalizers[] = new CustomFieldNormalizer();
         $normalizers[] = new EntryCollectionNormalizer();
         $normalizers[] = new EntryGetNormalizer();
@@ -36,6 +37,17 @@ class NormalizerFactory
         $normalizers[] = new ListPostNormalizer();
         $normalizers[] = new UserNormalizer();
         $normalizers[] = new UserCollectionNormalizer();
+        $normalizers[] = new HotelDetailNormalizer();
+        $normalizers[] = new LineItemNormalizer();
+        $normalizers[] = new LocationNormalizer();
+        $normalizers[] = new MatchingFactNormalizer();
+        $normalizers[] = new MerchantNormalizer();
+        $normalizers[] = new PaymentCardNormalizer();
+        $normalizers[] = new ReceiptCustomFieldNormalizer();
+        $normalizers[] = new ReceiptImageNormalizer();
+        $normalizers[] = new ReceiptImageCollectionNormalizer();
+        $normalizers[] = new ReceiptPostNormalizer();
+        $normalizers[] = new RideDetailNormalizer();
 
         return $normalizers;
     }
