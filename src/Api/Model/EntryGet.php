@@ -193,7 +193,7 @@ class EntryGet
     /**
      * The description of the expense. Maximum length: 64 characters.
      *
-     * @var string
+     * @var string|null
      */
     protected $description;
     /**
@@ -1248,7 +1248,7 @@ class EntryGet
     /**
      * The description of the expense. Maximum length: 64 characters.
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -1256,7 +1256,7 @@ class EntryGet
     /**
      * The description of the expense. Maximum length: 64 characters.
      */
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 

@@ -1478,6 +1478,7 @@ components:
             $ref: '#/components/schemas/CustomField'
         Description:
           type: string
+          nullable: true
           description: 'The description of the expense. Maximum length: 64 characters'
         ElectronicReceiptID:
           type: string
