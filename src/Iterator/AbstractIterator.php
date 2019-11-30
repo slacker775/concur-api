@@ -15,7 +15,6 @@ abstract class AbstractIterator
         $queryParser = new QueryParser();
         $offset = null;
         do {
-            printf("Executing iteration with offset: %s\n", $offset);
             if ($offset !== null) {
                 $params = [
                     'offset' => $offset
@@ -30,9 +29,7 @@ abstract class AbstractIterator
                 $uri = Uri::createFromString($nextPage);
                 $query = $queryParser->parse($uri->getQuery());
                 $offset = $query['offset'];
-                printf("OFFSET: %s\n", $offset);
             } else {
-                printf("NO OFFSET, end of items\n");
                 $offset = null;
             }
         } while ($offset !== null);
