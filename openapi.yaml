@@ -1,0 +1,3391 @@
+openapi: 3.0.2
+info:
+  title: Users
+  description: Provides details of all the client's SAP Concur users that meet the
+    search parameters.
+  version: "3.0"
+servers:
+- url: https://www.concursolutions.com/api/v3.0
+security:
+- OAuth2: []
+tags:
+- name: Resources
+paths:
+  /expense/entries:
+    get:
+      tags:
+      - Resources
+      summary: Get expense entries
+      description: Gets all expense entries owned by the user.
+      parameters:
+      - name: reportID
+        in: query
+        description: 'The report ID of the entries to be retrieved.  Format: An alpha-numeric
+          GUID string.'
+        schema:
+          type: string
+      - name: paymentTypeID
+        in: query
+        description: The ID of the payment type of the entries to be retrieved.
+        schema:
+          type: string
+      - name: batchID
+        in: query
+        description: The batch ID for the entries to be retrieved. The batch ID identifies
+          the batch that contains the report payee associated with the entries.
+        schema:
+          type: string
+      - name: isBillable
+        in: query
+        description: 'Determines whether the operation retrieves entries that are
+          billable. Format: true or false'
+        schema:
+          type: boolean
+      - name: attendeeTypeCode
+        in: query
+        description: The ID of the attendee type for the entries to be retrieved.
+        schema:
+          type: string
+      - name: hasAttendees
+        in: query
+        description: 'Determines whether the operation retrieves entries that have
+          attendees. Format: true or false'
+        schema:
+          type: boolean
+      - name: hasVAT
+        in: query
+        description: 'Determines whether the operation retrieves entries that have
+          VAT details. Format: true or false'
+        schema:
+          type: boolean
+      - name: expenseTypeCode
+        in: query
+        description: The code for the expense type for the entries to be retrieved.
+        schema:
+          type: string
+      - name: attendeeID
+        in: query
+        description: The attendee associated with the entries to be retrieved.
+        schema:
+          type: string
+      - name: offset
+        in: query
+        description: The starting point of the next set of results, after the limit
+          specified in the limit field has been reached.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: 'The number of records to return. Default value: 25'
+        schema:
+          type: integer
+          format: int32
+      - name: user
+        in: query
+        description: The login ID of the user who owns the entries. The user must
+          have the Web Services Admin role to use this parameter.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntryCollection'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EntryCollection'
+    post:
+      tags:
+      - Resources
+      summary: Create expense entry
+      description: Creates a new expense entry for the specified user.
+      parameters:
+      - name: user
+        in: query
+        description: The login ID of the user who owns the entries. The user must
+          have the Web Services Admin role to use this parameter.
+        schema:
+          type: string
+      requestBody:
+        description: The expense entry object to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntryPost'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/EntryPost'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+      x-codegen-request-body-name: content
+  /expense/entries/{id}:
+    get:
+      tags:
+      - Resources
+      summary: Get a single expense entry
+      description: Gets the specified expense entry.
+      parameters:
+      - name: id
+        in: path
+        description: The expense entry ID.
+        required: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: The login ID of the user who owns the entries. The user must
+          have the Web Services Admin role to use this parameter.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntryGet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EntryGet'
+    put:
+      tags:
+      - Resources
+      summary: Update an expense entry
+      description: Updates the specified expense entry. Only the fields provided in
+        the supplied object are updated. Missing fields will not be altered.
+      parameters:
+      - name: id
+        in: path
+        description: The expense entry ID.
+        required: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: The login ID of the user who owns the entries. The user must
+          have the Web Services Admin role to use this parameter.
+        schema:
+          type: string
+      requestBody:
+        description: The partial or complete expense entry object to update.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntryPut'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/EntryPut'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+      x-codegen-request-body-name: content
+    delete:
+      tags:
+      - Resources
+      summary: Delete an expense entry
+      description: Deletes the specified expense entry.
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the expense entry to delete.
+        required: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: The login ID of the user who owns the entries. The user must
+          have the Web Services Admin role to use this parameter.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+  /expense/receiptimages:
+    get:
+      tags:
+      - Resources
+      summary: Get all receipt IDs by user
+      description: Get a list of all receipt IDs owned by the user associated with
+        the access token
+      parameters:
+      - name: offset
+        in: query
+        description: Starting page offset
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of records to return (default 25)
+        schema:
+          type: integer
+          format: int32
+      - name: user
+        in: query
+        description: The login ID of the user. Optional. The user must have the Web
+          Services Admin (Professional) or Can Administer (Standard) user role to
+          use this parameter.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptImageCollection'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ReceiptImageCollection'
+    post:
+      tags:
+      - Resources
+      summary: Create a receipt image
+      description: Upload a new receipt image.
+      parameters:
+      - name: user
+        in: query
+        description: The login ID of the user. Optional. The user must have the Web
+          Services Admin (Professional) or Can Administer (Standard) user role to
+          use this parameter.
+        schema:
+          type: string
+      requestBody:
+        description: Image data file
+        content:
+          application/json:
+            schema:
+              type: object
+          application/xml:
+            schema:
+              type: object
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptImage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ReceiptImage'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+      x-codegen-request-body-name: image
+  /expense/receiptimages/{id}:
+    get:
+      tags:
+      - Resources
+      summary: Get a receipt image URL
+      description: Get a receipt image URL by image ID.
+      parameters:
+      - name: id
+        in: path
+        description: ReceiptImage ID
+        required: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: The login ID of the user. Optional. The user must have the Web
+          Services Admin (Professional) or Can Administer (Standard) user role to
+          use this parameter.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptImage'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ReceiptImage'
+    put:
+      tags:
+      - Resources
+      summary: Append a receipt image
+      description: Appends a receipt image to an existing image. The resulting image
+        will be a consolidated PDF.
+      parameters:
+      - name: id
+        in: path
+        description: ID of the receipt image to update
+        required: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: The login ID of the user. Optional. The user must have the Web
+          Services Admin (Professional) or Can Administer (Standard) user role to
+          use this parameter.
+        schema:
+          type: string
+      requestBody:
+        description: Image data file
+        content:
+          application/json:
+            schema:
+              type: object
+          application/xml:
+            schema:
+              type: object
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+      x-codegen-request-body-name: image
+    delete:
+      tags:
+      - Resources
+      summary: Delete a receipt image by ID
+      description: Deletes the specified receipt image
+      parameters:
+      - name: id
+        in: path
+        description: ID of the receipt image to delete
+        required: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: The login ID of the user. Optional. The user must have the Web
+          Services Admin (Professional) or Can Administer (Standard) user role to
+          use this parameter.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+  /expense/reports:
+    get:
+      tags:
+      - Resources
+      summary: Gets all reports
+      description: Returns all reports owned by the user based on the search criteria.
+      parameters:
+      - name: offset
+        in: query
+        description: Starting page offset
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of records to return (default 25)
+        schema:
+          type: integer
+          format: int32
+      - name: user
+        in: query
+        description: Optional. The login ID of the report owner(s) to use when searching
+          for reports. If the value is set to LoginID, reports for the report owner
+          with this login ID value are returned. If the value is set to ALL, reports
+          for all report owners are returned. If this parameter is not specified,
+          reports for the OAuth Consumer are returned. The access token owner (OAuth
+          Consumer) must have the Web Services Admin role to use this parameter.
+        schema:
+          type: string
+      - name: approvalStatusCode
+        in: query
+        description: 'The status code for the Approval Status. The values can include
+          Concur Expense standard codes or custom codes. The Concur Expense standard
+          code values are: A_AAFH - Report submission triggered an anomaly and fraud
+          check; A_ACCO - Report is pending reviews; A_APPR - Report has been approved;
+          A_EXTV - Report is pending external validation; A_FILE - Report has been
+          submitted; A_NOTF - Report has not been submitted; A_PBDG - Report approval
+          is pending Budget approval; A_PECO - Report approval is pending Cost object
+          approval; A_PEND - Report is pending manager approval; A_PVAL - Report is
+          pending prepayment validation; A_RESU - Report needs to be resubmitted;
+          A_RHLD - Report submission is pending receipt images; A_TEXP - Report expired
+          in approval queue. For custom codes, contact Concur Developer Support.'
+        schema:
+          type: string
+      - name: paymentStatusCode
+        in: query
+        description: 'The payment status code for the report. The values can include
+          Concur Expense standard codes or custom codes. The Concur Expense standard
+          code values are: P_HOLD - Report payment is on hold; P_NOTP - Report has
+          not been paid; P_PAID - Report has been paid; P_PAYC - Payment is confirmed.
+          Some or all of the report expenses have been paid; P_PROC - Report is in
+          process to be paid. For custom codes, contact Concur Developer Support.'
+        schema:
+          type: string
+      - name: currencyCode
+        in: query
+        description: 'The 3-letter ISO 4217 currency code for the report currency.
+          Example: USD.'
+        schema:
+          type: string
+      - name: paymentType
+        in: query
+        description: The unique identifier for the payment type that is the payment
+          type for at least one expense entry in the report. Use PaymentTypeID from
+          the "GET Expense Group Configurations" function.
+        schema:
+          type: string
+      - name: reimbursementMethod
+        in: query
+        description: 'The method the report owner will be reimbursed. VALUES: ADPPAYR
+          - ADP Payroll; APCHECK - AP (Company Check); CNQRPAY - Expense Pay; PMTSERV
+          - Other Payment Service. NOTE: PAY_PAL is NOT supported.'
+        schema:
+          type: string
+      - name: approverLoginID
+        in: query
+        description: The login ID for the report approver that is the current approver
+          assigned to the report.
+        schema:
+          type: string
+      - name: expenseTypeCode
+        in: query
+        description: The expense type code that is the expense type for at least one
+          expense entry in the report. Use ExpenseTypeCode from the "GET Expense Group
+          Configurations" function.
+        schema:
+          type: string
+      - name: attendeeTypeCode
+        in: query
+        description: The report contains expense entries that have attendees of the
+          specified type.
+        schema:
+          type: string
+      - name: countryCode
+        in: query
+        description: 'The report country. Maximum 2 characters. Format: The ISO 3166-1
+          alpha-2 country code. Example: United States is US.'
+        schema:
+          type: string
+      - name: batchID
+        in: query
+        description: The unique identifier for a payment batch where there is at least
+          one report payee within the report. Use the BatchID from the "GET Payment
+          Batch List" function.
+        schema:
+          type: string
+      - name: vendorName
+        in: query
+        description: The Vendor Description that is the vendor for at least one expense
+          entry in the report.
+        schema:
+          type: string
+      - name: hasVAT
+        in: query
+        description: 'Determines if the report has at least one expense entry with
+          VAT details. Format: true or false.'
+        schema:
+          type: boolean
+      - name: hasImages
+        in: query
+        description: 'Determines if the report has at least one expense entry with
+          an entry image or if there is a report image for this report. Format: true
+          or false.'
+        schema:
+          type: boolean
+      - name: hasAttendees
+        in: query
+        description: 'Determines if the report has at least one expense entry with
+          an attendee. Format: true or false.'
+        schema:
+          type: boolean
+      - name: hasBillableExpenses
+        in: query
+        description: 'The IsBillable flag for at least one expense entry in the report.
+          Format: true or false.'
+        schema:
+          type: boolean
+      - name: isTestUser
+        in: query
+        description: 'The report owner is a test user using the report for testing
+          purposes in a non-production envirnment. format: true or false.'
+        schema:
+          type: boolean
+      - name: expenseGroupConfigID
+        in: query
+        description: The unique identifier for the expense group configuration associated
+          to the report's expense group. Use the ID from the "GET Expense Group Configurations"
+          function.
+        schema:
+          type: string
+      - name: entryTransactionDateBefore
+        in: query
+        description: 'The entry transaction date for at least one expense entry in
+          the report is before this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: entryTransactionDateAfter
+        in: query
+        description: 'The entry transaction date for at least one expense entry in
+          the report is after this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: createDateBefore
+        in: query
+        description: 'The report create date is before this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: createDateAfter
+        in: query
+        description: 'The report create date is after this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: userDefinedDateBefore
+        in: query
+        description: 'The report user defined date is before this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: userDefinedDateAfter
+        in: query
+        description: 'The report user defined date is after this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: submitDateBefore
+        in: query
+        description: 'The report submit date is before this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: submitDateAfter
+        in: query
+        description: 'The report submit date is after this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: processingPaymentDateBefore
+        in: query
+        description: 'The report processing payment date is before this date.Format:
+          YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: processingPaymentDateAfter
+        in: query
+        description: 'The report processing payment date is after this date. Format:
+          YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: paidDateBefore
+        in: query
+        description: 'The report paid date is before this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: paidDateAfter
+        in: query
+        description: 'The report paid date is after this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: modifiedDateBefore
+        in: query
+        description: 'The report modified date is before this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      - name: modifiedDateAfter
+        in: query
+        description: 'The report modified date is after this date.Format: YYYY-MM-DD'
+        schema:
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportCollection'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ReportCollection'
+    post:
+      tags:
+      - Resources
+      summary: Create a new report
+      description: Create an expense report with the supplied data.
+      parameters:
+      - name: user
+        in: query
+        description: Optional. The login ID for the Report Owner.
+        schema:
+          type: string
+      requestBody:
+        description: Report object to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportPost'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ReportPost'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+      x-codegen-request-body-name: content
+  /expense/reports/{id}:
+    get:
+      tags:
+      - Resources
+      summary: Gets a single report
+      description: Returns the specified report.
+      parameters:
+      - name: id
+        in: path
+        description: Report ID
+        required: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: Optional. The login ID of the report owner(s) to use when searching
+          for reports. If the value is set to LoginID, reports for the report owner
+          with this login ID value are returned. If the value is set to ALL, reports
+          for all report owners are returned. If this parameter is not specified,
+          reports for the OAuth Consumer are returned. The access token owner (OAuth
+          Consumer) must have the Web Services Admin role to use this parameter.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportGet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ReportGet'
+    put:
+      tags:
+      - Resources
+      summary: Update report
+      description: Updates the report specified in the URL. Only the provided fields
+        will be updated, missing fields will not be altered.
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier for the report.
+        required: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: Optional. The login ID for the Report Owner.
+        schema:
+          type: string
+      requestBody:
+        description: The report object to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportPut'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ReportPut'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+      x-codegen-request-body-name: content
+  /common/listitems:
+    get:
+      tags:
+      - Resources
+      summary: Get all list items
+      description: Returns all list items based on the search criteria.
+      parameters:
+      - name: limit
+        in: query
+        description: The number of records to return. The default is 25 and the maximum
+          is 100.
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        description: The start of the page offset. The default is from the beginning.
+        schema:
+          type: string
+      - name: listId
+        in: query
+        description: The unique identifier for the list this item is a member of.
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: 'The name of the list item. Maximum length: 64.'
+        schema:
+          type: string
+      - name: parentId
+        in: query
+        description: The unique identifier of this item's parent. Empty when there
+          is no parent.
+        schema:
+          type: string
+      - name: level1Code
+        in: query
+        description: The item code for the first level of the list. All lists have
+          at least a Level1Code. Maximum 32 characters
+        schema:
+          type: string
+      - name: level2Code
+        in: query
+        description: The item code for the second level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      - name: level3Code
+        in: query
+        description: The item code for the third level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      - name: level4Code
+        in: query
+        description: The item code for the fourth level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      - name: level5Code
+        in: query
+        description: The item code for the fifth level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      - name: level6Code
+        in: query
+        description: The item code for the sixth level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      - name: level7Code
+        in: query
+        description: The item code for the seventh level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      - name: level8Code
+        in: query
+        description: The item code for the eighth level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      - name: level9Code
+        in: query
+        description: The item code for the ninth level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      - name: level10Code
+        in: query
+        description: The item code for the tenth level of the list. Empty when this
+          level doesn't exist in the list. Maximum 32 characters
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListItemGetCollection'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListItemGetCollection'
+    post:
+      tags:
+      - Resources
+      summary: Create a new list item
+      description: Creates a new item in the specified list.
+      requestBody:
+        description: List item object to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListItemPost'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ListItemPost'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+      x-codegen-request-body-name: content
+  /common/listitems/{id}:
+    get:
+      tags:
+      - Resources
+      summary: Get a single list item by ID
+      description: Returns the specified list item.
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier for the list item.
+        required: true
+        schema:
+          type: string
+      - name: listId
+        in: query
+        description: The unique identifier for the list this item is a member.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListItemGet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListItemGet'
+    put:
+      tags:
+      - Resources
+      summary: Update list item
+      description: Updates the specified list item. Only the provided fields will
+        be updated, missing fields will not be altered.
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier for the list item.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The list item object to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListItemPut'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ListItemPut'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+      x-codegen-request-body-name: content
+    delete:
+      tags:
+      - Resources
+      summary: Delete list item by ID
+      description: Deletes the specified list item.
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier of the list item to delete
+        required: true
+        schema:
+          type: string
+      - name: listId
+        in: query
+        description: The unique identifier of the list associated with a list item
+          to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Void'
+  /common/lists:
+    get:
+      tags:
+      - Resources
+      summary: Gets all lists
+      description: Returns all lists based on the search criteria.
+      parameters:
+      - name: limit
+        in: query
+        description: The number of records to return. The default is 25 and the maximum
+          is 100.
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        description: The start of the page offset. The default is from the beginning.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGetCollection'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListGetCollection'
+    post:
+      tags:
+      - Resources
+      summary: Create a new list
+      description: Create a new list
+      requestBody:
+        description: list object to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListPost'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ListPost'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+      x-codegen-request-body-name: content
+  /common/lists/{id}:
+    get:
+      tags:
+      - Resources
+      summary: Get a single list by ID
+      description: Returns a list by ID.
+      parameters:
+      - name: id
+        in: path
+        description: The unique identifier for the list.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGet'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ListGet'
+  /common/receipts:
+    post:
+      tags:
+      - Resources
+      summary: Create a new receipt entry
+      description: Creates a new receipt entry. This operation enables a provider
+        company to post receipts to Concur.
+      requestBody:
+        description: The Receipt object to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceiptPost'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ReceiptPost'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreateResponse'
+      x-codegen-request-body-name: content
+  /common/users:
+    get:
+      tags:
+      - Resources
+      summary: Get all users.
+      description: Retrieves all users based on the search criteria.
+      parameters:
+      - name: offset
+        in: query
+        description: The starting point of the next set of results, after the limit
+          specified in the limit field has been reached.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: 'The number of records to return. Default value: 25. Maximum:
+          100.'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: primaryEmail
+        in: query
+        description: The primary email of the user.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: employeeID
+        in: query
+        description: The employee ID of the user.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: user
+        in: query
+        description: The login ID of the user.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: lastName
+        in: query
+        description: The last name of the user.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: active
+        in: query
+        description: 'Indicates whether to return active or inactive users. FORMAT:
+          true or false'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: string
+  schemas:
+    CreateResponse:
+      type: object
+      properties:
+        ID:
+          type: string
+        URI:
+          type: string
+    Void:
+      type: object
+    Decimal:
+      type: object
+    GeneralDetail:
+      type: object
+      properties:
+        LineItems:
+          $ref: '#/components/schemas/LineItem'
+    CustomField:
+      type: object
+      properties:
+        Code:
+          type: string
+          description: For list fields, this is the list item code.
+        ListItemID:
+          type: string
+          description: For list fields, this is the list item ID.
+        Type:
+          type: string
+          description: 'The custom field type. Supported values: Amount, Boolean,
+            ConnectedList, Date, Integer, List, Number, Text'
+        Value:
+          type: string
+          description: 'The value in the Org Unit or Custom field. For list fields,
+            this is the name of the list item.  Maximum length: 48 characters'
+    EntryCollection:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntryGet'
+        NextPage:
+          type: string
+          nullable: true
+          description: The URI of the next page of results, if any.
+    EntryGet:
+      type: object
+      properties:
+        AllocationType:
+          type: string
+          description: 'The type of allocations for the expense. Supported values:
+            P - partial allocation, F - full allocation, N - no allocation.'
+        ApprovedAmount:
+          type: number
+          description: The approved amount of the expense entry, in the report currency.
+          format: double
+        CompanyCardTransactionID:
+          type: string
+          nullable: true
+          description: The unique identifier for a company card transaction that is
+            associated with this expense. This element is null when there is no company
+            card transaction associated with this expense.
+        Custom1:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom10:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom11:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom12:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom13:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom14:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom15:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom16:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom17:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom18:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom19:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom2:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom20:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom21:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom22:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom23:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom24:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom25:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom26:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom27:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom28:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom29:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom3:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom30:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom31:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom32:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom33:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom34:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom35:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom36:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom37:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom38:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom39:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom4:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom40:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom5:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom6:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom7:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom8:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom9:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Description:
+          type: string
+          nullable: true
+          description: 'The description of the expense. Maximum length: 64 characters'
+        ElectronicReceiptID:
+          type: string
+          nullable: true
+          description: The unique identifier for an eReceipt that is associated with
+            this expense. This element is null when there is no eReceipt associated
+            with this expense.
+        EmployeeBankAccountID:
+          type: string
+          nullable: true
+          description: The unique identifier of an employee bank account that is associated
+            with this expense. Typically, this element is used when Expense Pay reimburses
+            the employee for this expense.
+        ExchangeRate:
+          type: number
+          description: The currency conversion rate that converts the transaction
+            amount that is in the transaction currency into the posted amount that
+            is in the report currency. This element is typically not provided. If
+            this element is empty for transactions in a currency different than the
+            user's reimbursement currency, Expense will use the company's configured
+            exchange rates to determine the posted amount for the transaction. If
+            the system is not able to determine the exchange rate, a value of 1.0
+            will be used.
+          format: double
+        ExpenseTypeCode:
+          type: string
+          description: The code for the expense type.
+        ExpenseTypeName:
+          type: string
+          description: The name of the expense type, localized to the user's language.
+        FormID:
+          type: string
+          description: The ID of the form used by this expense entry.
+        HasAppliedCashAdvance:
+          type: boolean
+          description: 'Whether the entry has a cash advance applied to it. Format:
+            true or false'
+        HasAttendees:
+          type: boolean
+          description: 'Indicates whether the expense has attendees. Format: true
+            or false'
+        HasComments:
+          type: boolean
+          description: 'Whether the expense has comments. Format: true or false'
+        HasExceptions:
+          type: boolean
+          description: 'Whether the expense has exceptions. Format: true or false'
+        HasImage:
+          type: boolean
+          description: 'Indicates whether there is an entry image attached to the
+            entry. Format: true or false'
+        HasItemizations:
+          type: boolean
+          description: 'Indicates whether the expense has itemizations. Use the Format:
+            true or false'
+        HasVAT:
+          type: boolean
+          description: 'Indicates whether the entry has VAT data. Format: true or
+            false'
+        ID:
+          type: string
+          description: The unique identifier of the resource.
+        IsBillable:
+          type: boolean
+          description: 'Indicates whether the expense is billable. Format: true or
+            false'
+        IsImageRequired:
+          type: boolean
+          description: 'Indicates whether an entry image is required for the entry.
+            Format: true or false'
+        IsPaidByExpensePay:
+          type: boolean
+          description: 'Whether the entry is paid using the Expense Pay service. This
+            element has a value if the report has reached the Processing Payment workflow
+            step, because this is when Concur Expense determines whether it will be
+            paid by Expense Pay. Format: true or false'
+        IsPersonal:
+          type: boolean
+          description: 'Indicates whether the expense is personal (that is, non-reimbursable).
+            Format: true or false'
+        IsPersonalCardCharge:
+          type: boolean
+          description: 'Indicates whether the expense entry was imported from a personal
+            card feed. Format: true or false'
+        Journey:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/Journey'
+        LastModified:
+          oneOf:
+            type: boolean, string
+          description: The UTC date when the entry was last modified.
+          format: date-time
+        LocationCountry:
+          type: string
+          nullable: true
+          description: The 2-letter ISO 3166-1 country code where the expense was
+            incurred.
+        LocationID:
+          type: string
+          nullable: true
+          description: The unique identifier for the location where the expense was
+            incurred.
+        LocationName:
+          type: string
+          nullable: true
+          description: The location where the expense was incurred, usually the city
+            name.
+        LocationSubdivision:
+          type: string
+          nullable: true
+          description: The ISO 3166-2:2007 country subdivision state, province, or
+            other country subdivision where the expense was incurred.
+        OrgUnit1:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit2:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit3:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit4:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit5:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit6:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        PaymentTypeID:
+          type: string
+          description: The ID of the payment type for the entry. For mileage expenses,
+            use the Cash payment type. For expense types with an expense code that
+            uses a transaction amount instead of a distance, this element is required.
+            This element should not be used for expense types with an expense code
+            for Company Car or Personal Car, because these two expense codes always
+            use the Cash payment type.
+        PaymentTypeName:
+          type: string
+          description: The name of the payment type, localized to the user's language.
+        PostedAmount:
+          type: number
+          description: The amount of the expense entry, in the report currency.
+          format: double
+        ReceiptReceived:
+          type: boolean
+          description: 'Indicates whether this entry has been reviewed by a processor.
+            Format: true or false'
+        ReportID:
+          type: string
+          description: The report ID of the report where the entry will be added.
+        ReportOwnerID:
+          type: string
+          description: The login ID of the report owner.
+        SpendCategoryCode:
+          type: string
+          description: The ID of the spending category that is specified for this
+            expense entry.
+        SpendCategoryName:
+          type: string
+          description: The name of the spending category that is specified for this
+            expense entry, localized to the user's language.
+        TaxReceiptType:
+          type: string
+          description: 'The receipt type for this entry. Supported values: T - tax
+            receipt, R - regular receipt, N - no receipt'
+        TransactionAmount:
+          type: number
+          description: The amount of the expense entry, in the transaction currency
+            paid to the vendor. For expense types with an expense code that uses a
+            transaction amount instead of a distance, this element is required. This
+            element should not be used for expense types with an expense code for
+            Company Car or Personal Car, because these two expense codes use a distance
+            instead of a transaction amount.
+          format: double
+        TransactionCurrencyCode:
+          type: string
+          description: The 3-letter ISO 4217 currency code for the expense entry transaction
+            amount. This is the currency in which the vendor was paid. For expense
+            types with an expense code that uses a transaction amount instead of a
+            distance, this element is required. This element should not be used for
+            expense types with an expense code for Company Car or Personal Car, because
+            for these two expense codes the currency is always the Report Currency.
+        TransactionDate:
+          oneOf:
+            type: boolean, string
+          description: 'The date when the good or service associated with this expense
+            entry was provided. Format: YYYY-MM-DD'
+          format: date-time
+        TripID:
+          type: string
+          nullable: true
+          description: The unique identifier of a trip in the Itinerary Service that
+            includes a travel booking associated with this expense. This element is
+            null when there is no trip associated with the expense.
+        URI:
+          type: string
+          description: The URI to the resource.
+        VendorDescription:
+          type: string
+          nullable: true
+          description: 'The name of the vendor for the expense entry. Maximum length:
+            64 characters'
+        VendorListItemID:
+          type: string
+          nullable: true
+          description: The unique identifier for a vendor list item.
+        VendorListItemName:
+          type: string
+          nullable: true
+          description: The name of an item from a vendor list.
+    EntryPost:
+      type: object
+      properties:
+        Comment:
+          type: string
+          description: 'A comment that describes the expense entry. Maximum length:
+            500 characters'
+        Custom1:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom10:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom11:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom12:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom13:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom14:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom15:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom16:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom17:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom18:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom19:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom2:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom20:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom21:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom22:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom23:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom24:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom25:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom26:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom27:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom28:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom29:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom3:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom30:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom31:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom32:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom33:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom34:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom35:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom36:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom37:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom38:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom39:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom4:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom40:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom5:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom6:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom7:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom8:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom9:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Description:
+          type: string
+          description: 'The description of the expense. Maximum length: 64 characters'
+        ExchangeRate:
+          type: number
+          description: The currency conversion rate that converts the transaction
+            amount that is in the transaction currency into the posted amount that
+            is in the report currency. This element is typically not provided. If
+            this element is empty for transactions in a currency different than the
+            user's reimbursement currency, Expense will use the company's configured
+            exchange rates to determine the posted amount for the transaction. If
+            the system is not able to determine the exchange rate, a value of 1.0
+            will be used.
+          format: double
+        ExpenseTypeCode:
+          type: string
+          description: The code for the expense type. Use "GET /expense/expensegroupconfigurations"
+            to learn the expense type code for expense types that are active for this
+            report's policy.
+        IsBillable:
+          type: boolean
+          description: 'Indicates whether the expense is billable. Format: true or
+            false'
+        IsPersonal:
+          type: boolean
+          description: 'Indicates whether the expense is personal (that is, non-reimbursable).
+            Format: true or false'
+        Journey:
+          $ref: '#/components/schemas/Journey'
+        LocationID:
+          type: string
+          description: The unique identifier for the location where the expense was
+            incurred. Use the "GET /common/locations" function to get information
+            for this location.
+        OrgUnit1:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit2:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit3:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit4:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit5:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit6:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        PaymentTypeID:
+          type: string
+          description: The ID of the payment type for the entry. For mileage expenses,
+            use the Cash payment type. For expense types with an expense code that
+            uses a transaction amount instead of a distance, this element is required.
+            This element should not be used for expense types with an expense code
+            for Company Car or Personal Car, because these two expense codes always
+            use the Cash payment type.
+        ReportID:
+          type: string
+          description: The report ID of the report where the entry will be added.
+        TaxReceiptType:
+          type: string
+          description: 'The receipt type for this entry. Supported values: T - tax
+            receipt, R - regular receipt, N - no receipt'
+        TransactionAmount:
+          type: number
+          description: "The amount of the expense entry, in the transaction currency\
+            \ paid to the vendor.\tFor expense types with an expense code that uses\
+            \ a transaction amount instead of a distance, this element is required.\
+            \ This element should not be used for expense types with an expense code\
+            \ for Company Car or Personal Car, because these two expense codes use\
+            \ a distance instead of a transaction amount."
+          format: double
+        TransactionCurrencyCode:
+          type: string
+          description: The 3-letter ISO 4217 currency code for the expense entry transaction
+            amount. This is the currency in which the vendor was paid. For expense
+            types with an expense code that uses a transaction amount instead of a
+            distance, this element is required. This element should not be used for
+            expense types with an expense code for Company Car or Personal Car, because
+            for these two expense codes the currency is always the Report Currency.
+        TransactionDate:
+          type: string
+          description: 'The date when the good or service associated with this expense
+            entry was provided. Format: YYYY-MM-DD'
+          format: date-time
+        VendorDescription:
+          type: string
+          description: 'The name of the vendor for the expense entry. Maximum length:
+            64 characters'
+        VendorListItemID:
+          type: string
+          description: The unique identifier for a vendor list item.
+    EntryPut:
+      type: object
+      properties:
+        Comment:
+          type: string
+          description: 'A comment that describes the expense entry. Maximum length:
+            500 characters'
+        Custom1:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom10:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom11:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom12:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom13:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom14:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom15:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom16:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom17:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom18:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom19:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom2:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom20:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom21:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom22:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom23:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom24:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom25:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom26:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom27:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom28:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom29:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom3:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom30:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom31:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom32:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom33:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom34:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom35:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom36:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom37:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom38:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom39:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom4:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom40:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom5:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom6:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom7:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom8:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Custom9:
+          type: string
+          description: The details from the Custom fields. These fields may not have
+            data, depending on the configuration.
+        Description:
+          type: string
+          description: 'The description of the expense. Maximum length: 64 characters'
+        ExchangeRate:
+          type: number
+          description: The currency conversion rate that converts the transaction
+            amount that is in the transaction currency into the posted amount that
+            is in the report currency. This element is typically not provided. If
+            this element is empty for transactions in a currency different than the
+            user's reimbursement currency, Expense will use the company's configured
+            exchange rates to determine the posted amount for the transaction. If
+            the system is not able to determine the exchange rate, a value of 1.0
+            will be used.
+          format: double
+        ExpenseTypeCode:
+          type: string
+          description: The code for the expense type.
+        IsBillable:
+          type: boolean
+          description: 'Indicates whether the expense is billable. Format: true or
+            false'
+        IsPersonal:
+          type: boolean
+          description: 'Indicates whether the expense is personal (that is, non-reimbursable).
+            Format: true or false'
+        Journey:
+          $ref: '#/components/schemas/Journey'
+        LocationID:
+          type: string
+          description: The unique identifier for the location where the expense was
+            incurred.
+        OrgUnit1:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit2:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit3:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit4:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit5:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        OrgUnit6:
+          type: string
+          description: The details from the Org Unit fields. These fields may not
+            have data, depending on the configuration.
+        PaymentTypeID:
+          type: string
+          description: The ID of the payment type for the entry.  For mileage expenses,
+            use the Cash payment type. For expense types with an expense code that
+            uses a transaction amount instead of a distance, this element is required.
+            This element should not be used for expense types with an expense code
+            for Company Car or Personal Car, because these two expense codes always
+            use the Cash payment type.
+        ReportID:
+          type: string
+          description: The report ID of the report where the entry will be added.
+        TaxReceiptType:
+          type: string
+          description: 'The receipt type for this entry. Supported values: T - tax
+            receipt, R - regular receipt, N - no receipt'
+        TransactionAmount:
+          type: number
+          description: The amount of the expense entry, in the transaction currency
+            paid to the vendor. For expense types with an expense code that uses a
+            transaction amount instead of a distance, this element is required. This
+            element should not be used for expense types with an expense code for
+            Company Car or Personal Car, because these two expense codes use a distance
+            instead of a transaction amount.
+          format: double
+        TransactionCurrencyCode:
+          type: string
+          description: The 3-letter ISO 4217 currency code for the expense entry transaction
+            amount. This is the currency in which the vendor was paid. For expense
+            types with an expense code that uses a transaction amount instead of a
+            distance, this element is required. This element should not be used for
+            expense types with an expense code for Company Car or Personal Car, because
+            for these two expense codes the currency is always the Report Currency.
+        TransactionDate:
+          type: string
+          description: 'The date when the good or service associated with this expense
+            entry was provided. Format: YYYY-MM-DD'
+          format: date-time
+        VendorDescription:
+          type: string
+          description: 'The name of the vendor for the expense entry. Maximum length:
+            64 characters'
+        VendorListItemID:
+          type: string
+          description: The unique identifier for a vendor list item.
+    Journey:
+      type: object
+      properties:
+        BusinessDistance:
+          type: integer
+          description: The portion of the journey for business use, in the report
+            owner's unit of measure for distances. This element is required in order
+            to post a personal car mileage expense entry, or to post a company car
+            mileage expense when there is no PersonalDistance value. When using the
+            Odometer elements, the sum of PersonalDistance and BusinessDistance must
+            equal the difference between OdometerEnd and OdometerStart.
+          format: int32
+        EndLocation:
+          type: string
+          description: 'Indicates where the journey ended. This is also known as the
+            "To Location". Maximum length: 100 characters'
+        NumberOfPassengers:
+          type: integer
+          description: The number of people in the vehicle during the journey. Used
+            with Variable-Rate, Personal or Company Car.
+          format: int32
+        OdometerEnd:
+          type: integer
+          description: The odometer reading at the end of the journey. The value must
+            be greater than the OdometerStart value. This element is used with Variable-Rate
+            and Company Car configuration types.
+          format: int32
+        OdometerStart:
+          type: integer
+          description: The odometer reading at the start of the journey. This element
+            is used with Variable-Rate and Company Car configuration types.
+          format: int32
+        PersonalDistance:
+          type: integer
+          description: 'The portion of the journey for personal use. This element
+            is required in order to post a company car mileage expense when there
+            is no BusinessDistance value. Format: positive integer. When using the
+            Odometer elements, the sum of PersonalDistance and BusinessDistance must
+            equal the difference between OdometerEnd and OdometerStart. Used with
+            Company Car configuration types.'
+          format: int32
+        StartLocation:
+          type: string
+          description: 'Indicates where the journey started. This is also known as
+            the "From Location". Maximum length: 100 characters'
+        UnitOfMeasure:
+          type: string
+          description: 'The unit of measure for distance and odometer values. Supported
+            values: M - miles, K - kilometers'
+        VehicleID:
+          type: string
+          description: The unique identifier for the vehicle used for this journey.
+            This element is used only with Company Car configuration types. Use the
+            GET Vehicles function to learn the Vehicle ID.
+    ReportCollection:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportGet'
+        NextPage:
+          type: string
+          nullable: true
+          description: The URI of the next page of results, if any.
+    ReportGet:
+      type: object
+      properties:
+        AmountDueCompanyCard:
+          type: number
+          nullable: true
+          description: The total amount due to the company card for the report. Maximum
+            23 characters.
+          format: double
+        AmountDueEmployee:
+          type: number
+          nullable: true
+          description: The total amount due to the employee for the report. Maximum
+            23 characters.
+          format: double
+        ApprovalStatusCode:
+          type: string
+          nullable: true
+          description: The approval status code for the report.
+        ApprovalStatusName:
+          type: string
+          nullable: true
+          description: The report's approval status, in the OAuth consumer's language.
+        ApproverLoginID:
+          type: string
+          nullable: true
+          description: The Login ID of the report owner's expense approver.
+        ApproverName:
+          type: string
+          nullable: true
+          description: The name of the report owner's expense approver.
+        Country:
+          type: string
+          nullable: true
+          description: 'The report country. Maximum 2 characters. Format: The ISO
+            3166-1 alpha-2 country code. Example: United States is US.'
+        CountrySubdivision:
+          type: string
+          nullable: true
+          description: 'The report country subdivision.  Format: ISO 3166-2:2007 country
+            subdivision.'
+        CreateDate:
+          oneOf: 
+            - type: string
+            - type: boolean
+          nullable: true
+          description: The date the report was created.
+          format: date-time
+        CurrencyCode:
+          type: string
+          nullable: true
+          description: 'The 3-letter ISO 4217 currency code for the expense report
+            currency. Examples: USD - US dollars; BRL - Brazilian real; CAD - Canadian
+            dollar; CHF - Swiss franc; EUR - Euro; GBO - Pound sterling; HKD - Hong
+            Kong dollar; INR - Indian rupee; MXN - Mexican peso; NOK - Norwegian krone;
+            SEK - Swedish krona.'
+        Custom1:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom10:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom11:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom12:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom13:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom14:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom15:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom16:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom17:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom18:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom19:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom2:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom20:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom3:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom4:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom5:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom6:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom7:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom8:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        Custom9:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        EverSentBack:
+          type: boolean
+          description: 'Whether the report has ever been sent back to the employee.
+            Format: Y/N'
+        HasException:
+          type: boolean
+          description: 'Whether the report has exceptions. Format: Y/N '
+        ID:
+          type: string
+          description: The unique identifier of the resource.
+        LastComment:
+          type: string
+          nullable: true
+          description: The text of the most recent comment on the report.
+        LastModifiedDate:
+          oneOf:
+            type: boolean, string
+          description: The date the report header was last modified.
+          format: date-time
+        LedgerName:
+          type: string
+          nullable: true
+          description: The name of the expense report ledger. Maximum 20 characters.
+        Name:
+          type: string
+          nullable: true
+          description: The name of the report.
+        OrgUnit1:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit2:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit3:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit4:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit5:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OrgUnit6:
+          oneOf:
+            type: null
+            $ref: '#/components/schemas/CustomField'
+        OwnerLoginID:
+          type: string
+          nullable: true
+          description: The Login ID of the user this report belongs to.
+        OwnerName:
+          type: string
+          nullable: true
+          description: The name of the expense report owner.
+        PaidDate:
+          oneOf:
+            type: boolean, string
+          nullable: true
+          description: The date when all journal entries in the report were integrated
+            with or extracted to the financial system.
+          format: date-time
+        PaymentStatusCode:
+          type: string
+          nullable: true
+          description: The code for the payment status of the report.
+        PaymentStatusName:
+          type: string
+          nullable: true
+          description: The report's payment status, in the OAuth consumer's language.
+        PersonalAmount:
+          type: number
+          nullable: true
+          description: The total amount of expenses marked as personal. Maximum 23
+            characters.
+          format: double
+        PolicyID:
+          type: string
+          nullable: true
+          description: The unique identifier of the policy that applies to this report.
+            Maximum 64 characters.
+        ProcessingPaymentDate:
+          oneOf:
+            type: boolean, string
+          nullable: true
+          description: The date that the report completed all approvals and was ready
+            to be extracted for payment.
+          format: date-time
+        ReceiptsReceived:
+          type: boolean
+          description: 'If Y, then this report has its receipt receipt confirmed by
+            the Expense Processor. Format: Y/N'
+        SubmitDate:
+          oneOf:
+            type: boolean, string
+          nullable: true
+          description: The date the report was submitted.
+          format: date-time
+        Total:
+          type: number
+          nullable: true
+          description: The total amount of the report.
+          format: double
+        TotalApprovedAmount:
+          type: number
+          nullable: true
+          description: The total amount of approved expenses in the report. Maximum
+            23 characters.
+          format: double
+        TotalClaimedAmount:
+          type: number
+          nullable: true
+          description: The total amount of all non-personal expenses in the report.
+            Maximum 23 characters.
+          format: double
+        URI:
+          type: string
+          description: The URI to the resource.
+        UserDefinedDate:
+          oneOf:
+            type: boolean, string
+          nullable: true
+          description: The date of the report assigned by the user.
+          format: date-time
+        WorkflowActionUrl:
+          type: string
+          nullable: true
+          description: The URL to post a workflow action to the report using the "Post
+            Report Workflow Action" function.
+    ReportPost:
+      type: object
+      properties:
+        Comment:
+          type: string
+          description: 'The report header comment. Maximum length: 500.'
+        Custom1:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom10:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom11:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom12:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom13:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom14:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom15:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom16:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom17:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom18:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom19:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom2:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom20:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom3:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom4:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom5:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom6:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom7:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom8:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom9:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Name:
+          type: string
+          description: The name of the report.
+        OrgUnit1:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit2:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit3:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit4:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit5:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit6:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        PolicyID:
+          type: string
+          description: The unique identifier for the policy. This is the protected
+            Policy Key
+        Purpose:
+          type: string
+          description: 'The business purpose of the report. Maximum length: 500.'
+        UserDefinedDate:
+          type: string
+          description: The date of the report assigned by the user.
+          format: date-time
+    ReportPut:
+      type: object
+      properties:
+        Comment:
+          type: string
+          description: 'The report header comment. Maximum length: 500.'
+        Custom1:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom10:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom11:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom12:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom13:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom14:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom15:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom16:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom17:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom18:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom19:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom2:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom20:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom3:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom4:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom5:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom6:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom7:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom8:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Custom9:
+          type: string
+          description: The details from the Custom fields. These may not have data,
+            depending on configuration.
+        Name:
+          type: string
+          description: The name of the report.
+        OrgUnit1:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit2:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit3:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit4:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit5:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        OrgUnit6:
+          type: string
+          description: The details from the Org Unit fields. These may not have data,
+            depending on configuration.
+        PolicyID:
+          type: string
+          description: The unique identifier for the policy. This is the protected
+            Policy Key
+        Purpose:
+          type: string
+          description: 'The business purpose of the report. Maximum length: 500.'
+        UserDefinedDate:
+          type: string
+          description: The date of the report assigned by the user.
+          format: date-time
+    ListItemGet:
+      type: object
+      properties:
+        ID:
+          type: string
+          description: The unique identifier of the resource.
+        Level10Code:
+          type: string
+          nullable: true
+          description: The item code for the tenth level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        Level1Code:
+          type: string
+          nullable: true
+          description: The item code for the first level of the list. All lists have
+            at least a Level1Code. Maximum 32 characters
+        Level2Code:
+          type: string
+          nullable: true
+          description: The item code for the second level of the list. Empty when
+            this level doesn't exist in the list. Maximum 32 characters
+        Level3Code:
+          type: string
+          nullable: true
+          description: The item code for the third level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        Level4Code:
+          type: string
+          nullable: true
+          description: The item code for the fourth level of the list. Empty when
+            this level doesn't exist in the list. Maximum 32 characters
+        Level5Code:
+          type: string
+          nullable: true
+          description: The item code for the fifth level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        Level6Code:
+          type: string
+          nullable: true
+          description: The item code for the sixth level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        Level7Code:
+          type: string
+          nullable: true
+          description: The item code for the seventh level of the list. Empty when
+            this level doesn't exist in the list. Maximum 32 characters
+        Level8Code:
+          type: string
+          nullable: true
+          description: The item code for the eighth level of the list. Empty when
+            this level doesn't exist in the list. Maximum 32 characters
+        Level9Code:
+          type: string
+          nullable: true
+          description: The item code for the ninth level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        ListID:
+          type: string
+          description: The unique identifier for the list this item is a member of.
+        Name:
+          type: string
+          nullable: true
+          description: The name of item. Maximum 64 characters
+        ParentID:
+          type: string
+          nullable: true
+          description: The unique identifier of this item's parent. Empty when there
+            is no parent.
+        URI:
+          type: string
+          description: The URI to the resource.
+    ListItemGetCollection:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListItemGet'
+        NextPage:
+          type: string
+          nullable: true
+          description: The URI of the next page of results, if any.
+    ListItemPost:
+      type: object
+      properties:
+        Level10Code:
+          type: string
+          nullable: true
+          description: The item code for the tenth level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        Level1Code:
+          type: string
+          nullable: true
+          description: The item code for the first level of the list. All lists have
+            at least a Level1Code. Maximum 32 characters
+        Level2Code:
+          type: string
+          nullable: true
+          description: The item code for the second level of the list. Empty when
+            this level doesn't exist in the list. Maximum 32 characters
+        Level3Code:
+          type: string
+          nullable: true
+          description: The item code for the third level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        Level4Code:
+          type: string
+          nullable: true
+          description: The item code for the fourth level of the list. Empty when
+            this level doesn't exist in the list. Maximum 32 characters
+        Level5Code:
+          type: string
+          nullable: true
+          description: The item code for the fifth level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        Level6Code:
+          type: string
+          nullable: true
+          description: The item code for the sixth level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        Level7Code:
+          type: string
+          nullable: true
+          description: The item code for the seventh level of the list. Empty when
+            this level doesn't exist in the list. Maximum 32 characters
+        Level8Code:
+          type: string
+          nullable: true
+          description: The item code for the eighth level of the list. Empty when
+            this level doesn't exist in the list. Maximum 32 characters
+        Level9Code:
+          type: string
+          nullable: true
+          description: The item code for the ninth level of the list. Empty when this
+            level doesn't exist in the list. Maximum 32 characters
+        ListID:
+          type: string
+          description: The unique identifier for the list this item is a member of.
+        Name:
+          type: string
+          nullable: true
+          description: The name of item. Maximum 64 characters
+    ListItemPut:
+      type: object
+      properties:
+        Code:
+          type: string
+          nullable: true
+          description: The item code of the list item. Maximum 32 characters
+        ListID:
+          type: string
+          description: The unique identifier for the list this item is a member of.
+        Name:
+          type: string
+          nullable: true
+          description: The name of item. Maximum 64 characters
+    ListGet:
+      type: object
+      properties:
+        ConnectorID:
+          type: string
+          nullable: true
+          description: Optional. Defines the encrypted ConnectorID. If not provided
+            then the list isn't associated with a connector.
+        DisplayCodeFirst:
+          type: boolean
+          description: Required. Defines whether CODE should appear before TEXT, or
+            vice-versa.
+        ExternalThreshold:
+          type: integer
+          nullable: true
+          description: Optional. Default value is 1. Defines the threshold from where
+            the level starts being external. This value can only be set if a ConnectorID
+            is provided.
+          format: int32
+        ID:
+          type: string
+          description: The unique identifier of the resource.
+        IsVendorList:
+          type: boolean
+          description: Required. Defines whether it is a vendor list.
+        Name:
+          type: string
+          nullable: true
+          description: Required. Defines a name for the list. This name must be unique.
+        SearchCriteriaCode:
+          type: string
+          nullable: true
+          description: Required. Defines whether the search criteria should apply
+            to the CODE or to the TEXT.
+        URI:
+          type: string
+          nullable: true
+          description: The URI to the resource.
+    ListGetCollection:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListGet'
+        NextPage:
+          type: string
+          nullable: true
+          description: The URI of the next page of results, if any.
+    ListPost:
+      type: object
+      properties:
+        ConnectorID:
+          type: string
+          description: Optional. Defines the encrypted ConnectorID. If not provided
+            then the list isn't associated with a connector.
+        DisplayCodeFirst:
+          type: boolean
+          description: Required. Defines whether CODE should appear before TEXT, or
+            vice-versa.
+        ExternalThreshold:
+          type: integer
+          description: Optional. Default value is 1. Defines the threshold from where
+            the level starts being external. This value can only be set if a ConnectorID
+            is provided.
+          format: int32
+        IsVendorList:
+          type: boolean
+          description: Required. Defines whether it is a vendor list.
+        Name:
+          type: string
+          description: Required. Defines a name for the list. This name must be unique.
+        SearchCriteriaCode:
+          type: string
+          description: Required. Defines whether the search criteria should apply
+            to the CODE or to the TEXT.
+    User:
+      type: object
+      properties:
+        Active:
+          type: boolean
+          description: Indicates whether the user is currently active or not.
+        CellPhoneNumber:
+          type: string
+          nullable: true
+          description: The cell phone number of the user.
+        EmployeeID:
+          type: string
+          nullable: true         
+          description: The employee ID of the user.
+        FirstName:
+          type: string
+          nullable: true         
+          description: The first name of the user.
+        ID:
+          type: string
+          nullable: true         
+          description: The unique identifier of the resource.
+        LastName:
+          type: string
+          nullable: true         
+          description: The last name of the user.
+        LoginID:
+          type: string
+          nullable: true         
+          description: The login ID of the user.
+        MiddleName:
+          type: string
+          nullable: true         
+          description: The middle name of the user.
+        OrganizationUnit:
+          type: string
+          nullable: true         
+          description: The organization unit of the user.
+        PrimaryEmail:
+          type: string
+          nullable: true         
+          description: The primary email of the user.
+        URI:
+          type: string
+          nullable: true         
+          description: The URI to the resource.
+    UserCollection:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        NextPage:
+          type: string
+          nullable: true
+          description: The URI of the next page of results, if any.
+    HotelDetail:
+      type: object
+      properties:
+        AverageDailyRoomRate:
+          type: number
+          description: 'The sum of the room rate for each night stayed, divided by
+            the number of nights stayed. Range: -922,337,203,685,477 to 922,337,203,685,477'
+          format: double
+        CheckinDateTime:
+          type: string
+          description: 'The check-in date and time. Format: YYYY-MM-DDThh:mm'
+          format: date-time
+        CheckoutDateTime:
+          type: string
+          description: 'The check-out date and time. Format: YYYY-MM-DDThh:mm'
+          format: date-time
+        ConfirmationNumber:
+          type: string
+          description: 'The confirmation number for the booking. Maximum length: 32
+            characters'
+        GNR:
+          type: string
+          description: 'The Guest Name Record (GNR) for the stay. Maximum length:
+            20 characters'
+        LineItems:
+          $ref: '#/components/schemas/LineItem'
+        NumberInParty:
+          type: integer
+          description: The number of people for this stay.
+          format: int32
+        RatePlanType:
+          type: string
+          description: 'The rate plan type that is used to calculate the room rate.
+            Possible values are rate plan types defined using hospitality industry
+            standards. Maximum length: 50 characters'
+        RoomNumber:
+          type: string
+          description: 'The room number for the stay. Maximum length: 15 characters'
+        RoomType:
+          type: string
+          description: 'The type of room. Possible values are room types defined using
+            hospitality industry standards, such as Single, Double, Suite, and so
+            on. Maximum length: 50 characters'
+    LineItem:
+      type: object
+      properties:
+        Amount:
+          type: number
+          description: 'The total charged amount for the line item. Range: -922,337,203,685,477
+            to 922,337,203,685,477'
+          format: double
+        Date:
+          type: string
+          description: 'The date and time when the line item was charged. Format:
+            YYYY-MM-DDThh:mm'
+          format: date-time
+        Description:
+          type: string
+          description: 'The item''s description. Maximum length: 100 characters'
+        Description2:
+          type: string
+          description: 'Additional details about the item. In the receipt image, the
+            secondary description appears on the line following the primary description.
+            Maximum length: 32 characters'
+        Quantity:
+          type: integer
+          description: 'The quantity of units. Format: Any positive number'
+          format: int32
+        Rate:
+          type: number
+          description: 'The amount charged per unit. Range: -922,337,203,685,477 to
+            922,337,203,685,477'
+          format: double
+        RateType:
+          type: string
+          description: 'The unit of measure or rate type. Possible values: HOUR or
+            PER HOUR, DAY or PER DAY, WEEK or PER WEEK, MONTH or PER MONTH. Maximum
+            length: 10 characters'
+        Reference:
+          type: string
+          description: 'The item''s SKU, identifier, or some other attribute the provider
+            uses to reference the item. Maximum length: 32 characters'
+        SequenceNumber:
+          type: integer
+          description: The order in which the item appears in the sequence of line
+            items.
+          format: int32
+    Location:
+      type: object
+      properties:
+        Address:
+          type: string
+          description: 'The provider''s street address. Maximum length: 100 characters'
+        Address2:
+          type: string
+          description: 'The provider''s secondary street address. Maximum length:
+            50 characters'
+        City:
+          type: string
+          description: 'The provider''s city. Maximum length: 100 characters'
+        CountryCode:
+          type: string
+          description: 'The provider''s country. Format: <a target="_blank" href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">2-letter
+            ISO 3166-1 country code</a>'
+        CountrySubdivisionCode:
+          type: string
+          description: 'The provider''s state, province, or other country subdivision.
+            Format: <a target="_blank" href="http://en.wikipedia.org/wiki/ISO_3166-2">ISO
+            3166-2:2007 country subdivision</a> code YYY, where YYY is the one-to-three–character
+            subdivision code'
+        EmailAddress:
+          type: string
+          description: 'The provider''s email address. Maximum length: 255 characters'
+        FaxNumber:
+          type: string
+          description: 'The provider''s fax number. Maximum length: 32 characters'
+        InternetAddress:
+          type: string
+          description: 'The provider''s Web address. Maximum length: 255 characters'
+        Name:
+          type: string
+          description: 'The name of the provider''s location, such as an airport,
+            car rental agency, property, store, or other named location. Maximum length:
+            100 characters'
+        PostalCode:
+          type: string
+          description: 'The provider''s postal code. Maximum length: 20 characters'
+        TelephoneNumber:
+          type: string
+          description: 'The provider''s telephone number. Maximum length: 100 characters'
+    MatchingFact:
+      type: object
+      properties:
+        Type:
+          type: string
+          description: 'The type of matching fact that is used to identify the Concur
+            user who owns the receipt. Possible values: OAuth, Login'
+        Value:
+          type: string
+          description: The value of the matching fact. If the Type element is set
+            to OAuth, this value must be the access token for the Concur user who
+            owns the receipt. In this case, the access token must not be expired or
+            revoked. If the Type element is set to Login, this value must be the login
+            ID of the Concur user who owns the receipt.
+    Merchant:
+      type: object
+      properties:
+        Location:
+          $ref: '#/components/schemas/Location'
+        Name:
+          type: string
+          description: 'The name of the provider (merchant). Maximum length: 64 characters'
+    PaymentCard:
+      type: object
+      properties:
+        AuthorizationCode:
+          type: string
+          description: 'The authorization code that the card interchange provided
+            when it approved this purchase. Maximum length: 15 characters'
+        MaskedNumber:
+          type: string
+          description: 'The masked card number for the credit card. With the exception
+            of the AX (American Express) card type, this is the last four digits of
+            the card number. For American Express, the value can be one of these,
+            in order of preference: a) The first six digits and the last four digits
+            of the card number. b) The last five digits. c) The last four digits.'
+        Type:
+          type: string
+          description: 'The card interchange for the credit card. Possible values:
+            AX (American Express), DC (Diner''s Club), DS (Discover), CA (MasterCard),
+            VI (Visa), CB (Carte Blanche), ER (Enroute), TP (Universal Air Travel),
+            JC (JCB), EC (EuroCard), OTHER (other types)'
+    ReceiptCustomField:
+      type: object
+      properties:
+        Name:
+          type: string
+          description: 'The name of the custom field. Maximum length: 128 characters'
+        Value:
+          type: string
+          description: 'The value of the custom field. Maximum length: 256 characters'
+    ReceiptImage:
+      type: object
+      properties:
+        ID:
+          type: string
+          description: The unique identifier of the resource.
+        URI:
+          type: string
+          description: The URI to the resource.
+    ReceiptImageCollection:
+      type: object
+      properties:
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceiptImage'
+        NextPage:
+          type: string
+          nullable: true
+          description: The URI of the next page of results, if any.
+    ReceiptPost:
+      type: object
+      properties:
+        Amount:
+          type: number
+          description: 'The net amount of the transaction. A positive number means
+            a payment is due. A negative number means a refund is due. Zero means
+            no payment or refund is due. Range: -922,337,203,685,477 to 922,337,203,685,477'
+          format: double
+        CurrencyCode:
+          type: string
+          description: The <a target="_blank" href="http://en.wikipedia.org/wiki/ISO_4217">3-letter
+            ISO 4217 currency code</a> for the currency paid to the provider.
+        CustomFields:
+          $ref: '#/components/schemas/ReceiptCustomField'
+        FormofPaymentCode:
+          type: string
+          description: 'The code for the form of payment. Possible values: CASH (Cash),
+            CCARD (Credit Card), CPAID (Company Paid)'
+        GeneralDetail:
+          $ref: '#/components/schemas/GeneralDetail'
+        HotelDetail:
+          $ref: '#/components/schemas/HotelDetail'
+        ImageBase64:
+          type: string
+          description: The binary receipt image in Base64 encoding. This API supports
+            PNG, JPEG, JPG, and PDF file formats.
+        MatchingFact:
+          $ref: '#/components/schemas/MatchingFact'
+        Merchant:
+          $ref: '#/components/schemas/Merchant'
+        PaymentCard:
+          $ref: '#/components/schemas/PaymentCard'
+        RideDetail:
+          $ref: '#/components/schemas/RideDetail'
+        TransactionDateTime:
+          type: string
+          description: 'The date and time when the transaction happened. Format: YYYY-MM-DDThh:mm'
+          format: date-time
+        Type:
+          type: string
+          description: 'The type of receipt. Possible values: General, Ride, Hotel'
+    RideDetail:
+      type: object
+      properties:
+        DriverName:
+          type: string
+          description: 'The name of the driver. Maximum length: 255 characters'
+        DropoffLatitude:
+          type: number
+          description: 'The latitude of the ride end location. Range: -90 to 90'
+          format: double
+        DropoffLongitude:
+          type: number
+          description: 'The longitude of the ride end location. Range: -180 to 180'
+          format: double
+        EndDateTime:
+          type: string
+          description: 'The ending date and time for the ride. Format: YYYY-MM-DDThh:mm'
+          format: date-time
+        LineItems:
+          $ref: '#/components/schemas/LineItem'
+        StartDateTime:
+          type: string
+          description: 'The starting date and time for the ride. Format: YYYY-MM-DDThh:mm'
+          format: date-time
+        VehicleNumber:
+          type: string
+          description: 'The unique identifier for the vehicle. Maximum length: 50 characters'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: To use this API, you need to get OAuth client credentials (client
+        ID, secret, and geolocation) from SAP Concur, and be authorized to use the
+        relevant scope. Refer to the <a href="https://developer.concur.com/api-reference/authentication/getting-started.html">full
+        authentication information</a> for more information.
+      flows:
+        clientCredentials:
+          tokenUrl: https://us.api.concursolutions.com/oauth2/v0
+          scopes: {}
+x-sap-shortText: Retreives basic company information with a list of users.
+x-servers:
+- url: https://www.concursolutions.com/api/v3.0
+  description: SAP Concur API EndPoint

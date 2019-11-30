@@ -1,0 +1,8 @@
+/vendor/
+.settings
+.buildpath
+.project
+composer.lock
+.php_cs.cache
+swagger/
+test.php
