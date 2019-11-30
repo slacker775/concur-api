@@ -19,7 +19,7 @@ class ReceiptImageCollection
     /**
      * The URI of the next page of results, if any.
      *
-     * @var string
+     * @var string|null
      */
     protected $nextPage;
 
@@ -44,7 +44,7 @@ class ReceiptImageCollection
     /**
      * The URI of the next page of results, if any.
      */
-    public function getNextPage(): string
+    public function getNextPage(): ?string
     {
         return $this->nextPage;
     }
@@ -52,7 +52,7 @@ class ReceiptImageCollection
     /**
      * The URI of the next page of results, if any.
      */
-    public function setNextPage(string $nextPage): self
+    public function setNextPage(?string $nextPage): self
     {
         $this->nextPage = $nextPage;
 

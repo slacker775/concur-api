@@ -3303,6 +3303,7 @@ components:
             $ref: '#/components/schemas/ReceiptImage'
         NextPage:
           type: string
+          nullable: true
           description: The URI of the next page of results, if any.
     ReceiptPost:
       type: object

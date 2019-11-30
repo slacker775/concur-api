@@ -449,9 +449,7 @@ class EntryGetNormalizer implements DenormalizerInterface, NormalizerInterface, 
         if (null !== $object->getCustom9()) {
             $data->{'Custom9'} = $object->getCustom9();
         }
-        if (null !== $object->getDescription()) {
-            $data->{'Description'} = $object->getDescription();
-        }
+        $data->{'Description'} = $object->getDescription();
         $data->{'ElectronicReceiptID'} = $object->getElectronicReceiptID();
         $data->{'EmployeeBankAccountID'} = $object->getEmployeeBankAccountID();
         if (null !== $object->getExchangeRate()) {

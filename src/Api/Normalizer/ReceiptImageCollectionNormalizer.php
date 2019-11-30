@@ -63,9 +63,7 @@ class ReceiptImageCollectionNormalizer implements DenormalizerInterface, Normali
             }
             $data->{'Items'} = $values;
         }
-        if (null !== $object->getNextPage()) {
-            $data->{'NextPage'} = $object->getNextPage();
-        }
+        $data->{'NextPage'} = $object->getNextPage();
 
         return $data;
     }
