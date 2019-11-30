@@ -2,7 +2,7 @@
     "name": "slacker775/concur-api",
     "description": "Concur API Client",
     "type": "library",
-    "license": "GPL",
+    "license": "MIT",
     "authors": [
         {
             "name": "David Hollis",
